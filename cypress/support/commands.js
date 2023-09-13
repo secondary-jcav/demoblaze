@@ -24,8 +24,6 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-const cypress = require("cypress");
-
 const userFixture = "users.json";
 
 Cypress.Commands.add("uiLogin", (persona, userField, passwordField) => {
