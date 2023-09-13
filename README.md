@@ -42,7 +42,7 @@ This project is focused on testing [Demoblaze](https://demoblaze.com) using Cypr
 - Custom commands are used to simplify step definitions, making them easier to read & write.
 - Fixtures contain test user data, including sensitive data like passwords. **Note**: This is a bad practice; use environment variables or solutions like Google Secrets for real tests.
 
-## Testing Considerations
+## Testing Considerations (make better tests)
 
 ### Backend (BE)
 
