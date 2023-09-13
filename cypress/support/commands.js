@@ -23,3 +23,22 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+const cypress = require("cypress");
+
+const userFixture = "users.json";
+
+Cypress.Commands.add("uiLogin", (persona, userField, passwordField) => {
+  cy.fixture(userFixture).then((user) => {
+    cy.get(userField).type(user[persona]["username"], { force: true });
+    cy.get(passwordField).type(user[persona]["password"], { force: true });
+  });
+});
+
+Cypress.Commands.add("apiLogin", (persona) => {
+  cy.fixture(userFixture).then((user) => {
+    // get authorization such as a Bearer token from the backend
+    // set in the browser window and navigate directly to page under test
+    cy.log("not implemented");
+  });
+});

@@ -1,13 +1,14 @@
 {
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
+    "@badeball/cypress-cucumber-preprocessor": "18.0.5",
+    "@bahmutov/cypress-esbuild-preprocessor": "2.2.0",
     "cypress": "12.17.3"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true,
     "stepDefinitions": [
-      "cypress/e2e/[filepart]/step_definitions/**/*.{js,ts}"
+      "cypress/e2e/[filepart]/step_definitions/**/*.{js,ts}",
+      "cypress/e2e/common/common.js"
     ]
   }
 }

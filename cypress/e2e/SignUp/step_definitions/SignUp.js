@@ -2,58 +2,53 @@ import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor";
 
 const utils = require("../../../support/utils.js");
 
-const signUpButton = '[id="signin2"]';
-const signUpUsername = '[id="sign-username"]';
-const signUpPassword = '[id="sign-password"]';
+const signUpDashboardButton = '[id="signin2"]';
+const signUpUsernameInput = '[id="sign-username"]';
+const signUpPasswordInput = '[id="sign-password"]';
 const signUpButtonText = "Sign up";
-const loginButton = '[id="login2"]';
-const loginUsername = '[id="loginusername"]';
-const loginPassword = '[id="loginpassword"]';
-const loginButtonText = "Log in";
-const registeredUser = '[id="nameofuser"]';
+const loginDashboardButton = '[id="login2"]';
+const logoutDashboardButton = '[id="logout2"]';
+const loginPersona = "test.admin";
+const userOnDashboard = '[id="nameofuser"]';
 
 const userName = utils.generateRandomString();
 const userPassword = utils.generateRandomString();
 
-Given("I visit the home page", () => {
-  cy.visit("https://www.demoblaze.com/");
-});
-
 When("I go to the sign-up page", () => {
-  cy.get(signUpButton).click();
+  // Click on Sign Up in the dashboard
+  cy.get(signUpDashboardButton).click();
 });
 
 When("I enter the sign-up details", () => {
-  cy.intercept("POST", "https://api.demoblaze.com/signup").as("signup");
-  cy.get(signUpUsername).type(userName, { force: true });
-  cy.get(signUpPassword).type(userPassword, { force: true });
+  // Sign up with a new account
+  cy.intercept("POST", "https://api.demoblaze.com/signup").as("signupCall");
+  cy.get(signUpUsernameInput).type(userName, { force: true });
+  cy.get(signUpPasswordInput).type(userPassword, { force: true });
   cy.get("button").contains(signUpButtonText).click();
 });
 
+When("I click on log out", () => {
+  cy.get(logoutDashboardButton).click();
+});
+
 Then("I should see a sign-up confirmation message", () => {
-  cy.wait("@signup").then(() => {
+  // Alert confirms sign-up is successful
+  cy.wait("@signupCall").then(() => {
     cy.on("window:alert", (alert) => {
-      //assertions
       expect(alert).to.contains("Sign up successful.");
     });
   });
 });
 
-When("I log in using valid credentials", () => {
-  cy.get(loginButton).click();
-  cy.get(loginUsername).type(userName, { force: true });
-  cy.get(loginPassword).type(userPassword, { force: true });
-  cy.get("button").contains(loginButtonText).click();
-});
-
 Then("I should see my username on the dashboard", () => {
-  cy.get(registeredUser).should("have.text", `Welcome ${userName}`);
+  // confirm my username is displayed
+  cy.wait("@loginCall").then(() => {
+    cy.get(userOnDashboard).should("have.text", `Welcome ${loginPersona}`);
+  });
 });
 
-When("I log out", () => {
-  cy.get("#logoutLink").click();
-});
-
-Then("I should be redirected to the home page", () => {
-  cy.url().should("eq", "https://www.demoblaze.com/");
+Then("I expect the log in prompt in the dashboard", () => {
+  // Login button is displayed, my username is not
+  cy.get(loginDashboardButton).should("exist");
+  cy.get(userOnDashboard).should("not.contain.text", loginPersona);
 });

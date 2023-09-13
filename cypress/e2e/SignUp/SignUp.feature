@@ -6,7 +6,9 @@ Feature: Sign Up Process
     And I enter the sign-up details
     Then I should see a sign-up confirmation message
   
-  Scenario: Successful Log In
+  Scenario: Successful Log In and Out
     Given I visit the home page
     When I log in using valid credentials
     Then I should see my username on the dashboard
+    When I click on log out
+    Then I expect the log in prompt in the dashboard

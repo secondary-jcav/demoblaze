@@ -20,9 +20,8 @@ async function setupNodeEvents(on, config) {
 module.exports = defineConfig({
   e2e: {
     specPattern: "**/*.feature",
-    supportFile: false,
     setupNodeEvents,
     baseUrl: "https://www.demoblaze.com/",
-    defaultCommandTimeout: 30000,
+    defaultCommandTimeout: 10000,
   },
 });
